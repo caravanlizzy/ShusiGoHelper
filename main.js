@@ -1,0 +1,1 @@
+var manager = new Manager();
