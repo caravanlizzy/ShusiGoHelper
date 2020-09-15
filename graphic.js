@@ -50,6 +50,8 @@ Graphic.prototype.createHolderCards = function(parent){
     }
 }
 
+// Graphic.prototype.
+
 Graphic. prototype.createPlayerFrame = function(parent){
     let playerFrame = document.createElement('div');
     playerFrame.classList.add("playerFrame");
@@ -65,6 +67,12 @@ Graphic.prototype.createInfoBox = function(content, parent){
     infoBox.innerHTML = content;
     parent.appendChild(infoBox);
     return infoBox;
+}
+
+Graphic.prototype.drawCard = function(card, cardsPlayed){
+    let newCard = document.querySelector("playerFrame")[cardsPlayed];
+    newCard.innerHTML = card.text;
+    newCard.color = card.color;
 }
 
 

@@ -2,11 +2,14 @@ function Manager(){
     this.numberOfPlayers = 4;
     this.players = [];
     this.playerInfo = ["You", "Player2", "Player3", "Player4"]
-    this.activePlayer = 1;
-    this.turn = 0;
-    this.round = 0;
+    this.boards = [[], [], [], []];
+    this.activePlayer = 0;
     this.maxTurns = 8;
     this.maxRounds = 3;
+    this.populate = 0;
+    this.turn = 0;
+    this.round = 0;
+
     this.initScripts();
 
 }
@@ -22,11 +25,22 @@ Manager.prototype.initScripts = function(){
     this.graphic.init();
 }
 
-Manager.prototype.submitRound = function(){
+Manager.prototype.submitTurn = function(){
     
 }
 
 Manager.prototype.nextRound = function(){
+    if(this.round == maxRounds){
+        this.finishGame();
+    }
+}
+
+Manager.prototype.nextTurn = function(){
+    if(this.turn == 8){
+        this.startNewRound();
+    }
+
+this.turn += 1;
 
 }
 
@@ -45,13 +59,34 @@ Manager.prototype.getPlayer = function(index){
     return this.players[index];
 }
 
-Manager.prototype.addCard = function(player, card){
+Manager.prototype.addCard = function(card, boardIndex){
+    let board = this.getBoard(boardIndex);
+    board.push(card);
+    this.graphic.drawCard(card, )
 
 }
 
 Manager.prototype.getActivePlayer = function(){
     return this.activePlayer;
 }
+
+Manager.prototype.setPopulation = function(){
+    this.populate = this.maxTurns - this.turn;
+}
+
+Manager.prototype.getBoard = function(index){
+    return this.boards[index];
+}
+
+Manager.prototype.setActivePlayer = function(playerIndex){
+    this.activePlayer = this.players[playerIndex];
+}
+
+
+
+
+
+
 
 
 
