@@ -72,7 +72,7 @@
 }
 
 
-.holderCard{
+.card{
     width: 23%;
     height: 38%; 
     display: flex;
@@ -83,8 +83,28 @@
     justify-content: center;
     align-items: center;
     font-size: 30px; 
-    background-color: rgb(187, 187, 187); 
+    /* background-color: rgb(187, 187, 187);  */
     margin: 1%;
+}
+
+.cardHolder{
+    background-color: rgb(184, 184, 184);
+}
+
+.card{
+    width: 23%;
+    height: 38%; 
+    display: flex;
+    flex-wrap: nowrap;
+    position: relative;
+    border-radius: 15px;
+    vertical-align: middle;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px; 
+    /* background-color: rgb(54, 37, 37); */
+    margin: 1%;
+    /* border: solid 1px purple; */
 }
 
 .infoBox{
