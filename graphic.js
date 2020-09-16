@@ -10,8 +10,8 @@ function Graphic(){
 Graphic.prototype.crepandBox = function(className, parent){
     let div = document.createElement('div');
     div.classList.add(className);
-    parent.appendChild(div); 
-    return div;   
+    parent.appendChild(div);
+    return div;
 }
 
 Graphic.prototype.createDiv = function(className){
@@ -37,6 +37,7 @@ Graphic.prototype.init = function(){
         this.drawPlayerCards(player);
     }
     this.drawSupplyCards(this.manager.supplyCards);
+    this.drawSubmitbutton();
 }
 
 
@@ -95,7 +96,6 @@ Graphic.prototype.editCard = function(card, divCard){
     divCard.innerHTML = card.text;
     let manager = this.manager;
     divCard.onclick = function(){
-        console.log(manager);
         manager.removeHolderCard(this);
     }
 }
@@ -103,14 +103,21 @@ Graphic.prototype.editCard = function(card, divCard){
 Graphic.prototype.resetHolderCard = function(divCard){
     divCard.style.backgroundColor =  "rgb(184, 184, 184)";
     divCard.innerHTML = "";
-    let manager = this.manager;
+    // divCard.index = "";
+    // let manager = this.manager;
     divCard.onclick = function(){
         return;
     }
 }
 
 Graphic.prototype.resetTableauClick = function(){
-    
+
+}
+
+Graphic.prototype.drawSubmitbutton = function(){
+    let submitButton = this.createDiv("submitButton");
+    submitButton.innerHTML = "Done";
+    document.querySelectorAll(".infoFrame")[0].childNodes[0].appendChild(submitButton);
 }
 
 

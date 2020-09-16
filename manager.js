@@ -5,7 +5,7 @@ function Manager(){
     this.colors = ["chartreuse", "blueviolet", "cornflowerblue",  "khaki",  "goldenrod", "gold", "crimson", "darkred", "saddlebrown", "darkseagreen", "navajowhite",  "darksalmon"];
     this.info = ["s", "t", "d", "1", "2", "3", "1", "2", "3", "c", "w", "p"];
     this.shorts = ["s", "t", "d", "n1", "n2", "n3", "m1", "m2", "m3", "c", "w", "p"];
-    this.playerInfo = ["You", "Player2", "Player3", "Player4"]
+    this.playerInfo = ["You", "P2", "P3", "P4"]
     this.boards = [[], [], [], []];
     this.activePlayer = 0;
     this.maxTurns = 8;
@@ -129,7 +129,7 @@ Manager.prototype.addHolderCard = function(card){
             position = this.freePosition[0];
         }
     let holderDiv = document.querySelectorAll(".tableau")[0].childNodes[0].childNodes[position];
-    holderDiv.index = this.populationIndex;
+    holderDiv.index = position;
     this.increasePopulationIndex();
     let clickedCard = this.getCardById(card.id);
     this.boards[0].push(clickedCard);
@@ -155,7 +155,9 @@ Manager.prototype.getCardById = function(id){
 Manager.prototype.removeHolderCard = function(divCard){
     this.graphic.resetHolderCard(divCard);
     this.decreasePopulationIndex();
+    console.log(divCard.index);
     this.freePosition.push(divCard.index);
+    console.log(this.freePosition);
     this.boards[0].splice(divCard.index, 1);
 }
 
@@ -166,6 +168,8 @@ Manager.prototype.switchBoard = function(){
     }
     this.board = newBoard;
 }
+
+
 
 
 
