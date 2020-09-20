@@ -33,11 +33,11 @@ Graphic.prototype.init = function(){
     for(let i = 0; i < playerNum ; i++){
         let player = this.manager.getPlayer(i);
         player.infoContainer = this.drawInfoBox(player.infoBoxText, this.infoFrame)
-        player.cardDisplay = this.drawPlayerFrame(this.tableau);
+        player.cardDisplay = this.drawPlayerFrame(this.tableau, player.playerNum);
         this.drawPlayerCards(player);
     }
     this.drawSupplyCards(this.manager.supplyCards);
-    this.drawSubmitbutton();
+    //this.drawSubmitbutton();
 }
 
 
@@ -48,9 +48,10 @@ Graphic.prototype.init = function(){
 // }
 
 
-Graphic.prototype.drawPlayerFrame = function(parent){
+Graphic.prototype.drawPlayerFrame = function(parent, id){
     let playerFrame = document.createElement('div');
     playerFrame.classList.add("playerFrame");
+	playerFrame.id = id;
     parent.appendChild(playerFrame);
     return playerFrame;
 }
@@ -74,7 +75,7 @@ Graphic.prototype.drawSupplyCards = function(cardArray){
         newDiv.id = card.short;
         let manager = this.manager;
         newDiv.addEventListener('click', function(){
-            manager.addHolderCard(this);
+            manager.populateHolderCard(this);
         });
     }
 }
@@ -83,7 +84,7 @@ Graphic.prototype.drawSupplyCards = function(cardArray){
 Graphic.prototype.drawPlayerCards = function(player){
     for(let i = 0; i < player.cards.length; i++){
         let newDiv = this.createDiv("card ");
-        if(player.playerNum == 1){
+        if(player.playerNum == 0){
             newDiv.className += " cardHolder";
         }
         player.cardDisplay.appendChild(newDiv);
@@ -114,11 +115,11 @@ Graphic.prototype.resetTableauClick = function(){
 
 }
 
-Graphic.prototype.drawSubmitbutton = function(){
-    let submitButton = this.createDiv("submitButton");
-    submitButton.innerHTML = "Done";
-    document.querySelectorAll(".infoFrame")[0].childNodes[0].appendChild(submitButton);
-}
+//Graphic.prototype.drawSubmitbutton = function(){
+//    let submitButton = this.createDiv("submitButton");
+//    submitButton.innerHTML = "Done";
+//    document.querySelectorAll(".infoFrame")[0].childNodes[0].appendChild(submitButton);
+//}
 
 
 
