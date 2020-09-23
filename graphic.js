@@ -20,7 +20,11 @@ Graphic.prototype.createDiv = function(className){
     return newDiv;
 }
 
-// Graphics
+Graphic.prototype.drawPlayerBoxCard = function(player, card){
+	let playerBox = document.querySelector(".infoFrame").childNodes[player];
+	playerBox.style.backgroundColor = card.color;
+	playerBox.innerHTML = card.text;
+}
 
 
 
@@ -37,15 +41,8 @@ Graphic.prototype.init = function(){
         this.drawPlayerCards(player);
     }
     this.drawSupplyCards(this.manager.supplyCards);
-    //this.drawSubmitbutton();
+	this.createButton();
 }
-
-
-// Graphic.prototype.createHolderCard = function(parent){
-//         let holder = document.createElement('div');
-//         holder.classList.add("holderCard");
-//         parent.appendChild(holder);
-// }
 
 
 Graphic.prototype.drawPlayerFrame = function(parent, id){
@@ -54,6 +51,15 @@ Graphic.prototype.drawPlayerFrame = function(parent, id){
 	playerFrame.id = id;
     parent.appendChild(playerFrame);
     return playerFrame;
+}
+
+Graphic.prototype.createButton = function(){
+	this.button = this.crepandBox("button", this.basicFrame);
+	let manager = this.manager;
+	this.button.innerHTML = "Next";
+	this.button.onclick = function(){
+		manager.next();
+	}
 }
 
 
@@ -88,7 +94,6 @@ Graphic.prototype.drawPlayerCards = function(player){
             newDiv.className += " cardHolder";
         }
         player.cardDisplay.appendChild(newDiv);
-        // this.crepandBox("card", player.cardDisplay);
     }
 }
 
@@ -97,9 +102,11 @@ Graphic.prototype.editCard = function(card, divCard){
     divCard.innerHTML = card.text;
     let manager = this.manager;
     divCard.onclick = function(){
-        manager.removeHolderCard(this);
+        manager.moveCard(this);
     }
 }
+
+
 
 Graphic.prototype.resetHolderCard = function(divCard){
     divCard.style.backgroundColor =  "rgb(184, 184, 184)";
@@ -111,15 +118,37 @@ Graphic.prototype.resetHolderCard = function(divCard){
     }
 }
 
-Graphic.prototype.resetTableauClick = function(){
-
+Graphic.prototype.resetBlancCard = function(divCard){
+    divCard.style.backgroundColor =  "white";
+    divCard.innerHTML = "";
+    divCard.onclick = function(){
+        return;
+    }
 }
 
-//Graphic.prototype.drawSubmitbutton = function(){
-//    let submitButton = this.createDiv("submitButton");
-//    submitButton.innerHTML = "Done";
-//    document.querySelectorAll(".infoFrame")[0].childNodes[0].appendChild(submitButton);
-//}
+Graphic.prototype.resetPlayerBoxCard = function(player){
+	let playerBox = document.querySelector(".infoFrame").childNodes[player];
+	playerBox.style.backgroundColor = "white";
+	playerBox.innerHTML = "";
+}
+
+Graphic.prototype.clear = function(){
+	for(let i = 0; i < this.manager.numberOfPlayers; i++){
+		let player = i.toString();
+		let playerBoard = document.getElementById(player);
+		for(let j = 0; j < this.manager.maxTurns; j++){
+			let card = playerBoard.childNodes[j];
+			if(i == 0){
+				this.resetHolderCard(card);
+				this.resetPlayerBoxCard(player);
+			}
+			else{
+				this.resetBlancCard(card);
+				this.resetPlayerBoxCard(player);
+			}
+		}		
+	}	
+}
 
 
 
