@@ -9,7 +9,7 @@ function Graphic(){
 
 Graphic.prototype.crepandBox = function(className, parent){
     let div = document.createElement('div');
-    div.classList.add(className);
+    div.className = className;
     parent.appendChild(div);
     return div;
 }
@@ -32,7 +32,7 @@ Graphic.prototype.init = function(){
     this.basicFrame = this.crepandBox('basicFrame', document.querySelector("body"));
     this.infoFrame = this.crepandBox('infoFrame', this.basicFrame);
     this.tableau = this.crepandBox('tableau', this.basicFrame);
-    this.supplyFrame = this.crepandBox('supplyFrame', this.basicFrame);
+    this.supplyFrame = this.crepandBox('supplyFrame active', this.basicFrame);
     let playerNum = this.manager.getPlayerCount();
     for(let i = 0; i < playerNum ; i++){
         let player = this.manager.getPlayer(i);
@@ -47,18 +47,22 @@ Graphic.prototype.init = function(){
 
 Graphic.prototype.drawPlayerFrame = function(parent, id){
     let playerFrame = document.createElement('div');
-    playerFrame.classList.add("playerFrame");
+    playerFrame.className = "playerFrame";
+    if(id == 0){
+        playerFrame.className = "playerFrame active";
+    }
 	playerFrame.id = id;
     parent.appendChild(playerFrame);
     return playerFrame;
 }
 
 Graphic.prototype.createButton = function(){
-	this.button = this.crepandBox("button", this.basicFrame);
-	let manager = this.manager;
+    this.button = this.crepandBox("button button-inactive", this.basicFrame);
+    // this.button.className = "button button-inactive"
+	// let manager = this.manager;
 	this.button.innerHTML = "Next";
 	this.button.onclick = function(){
-		manager.next();
+		alert("Cards missing.")
 	}
 }
 
@@ -106,6 +110,31 @@ Graphic.prototype.editCard = function(card, divCard){
     }
 }
 
+Graphic.prototype.displayPopulateInterface = function(){
+    document.querySelector(".supplyFrame").className = "supplyFrame active";
+    document.querySelectorAll(".playerFrame")[0].className = "active playerFrame ";
+}
+
+Graphic.prototype.displayFinalizeButton = function(){
+    let manager = this.manager;
+    let button = document.querySelector(".button");
+    button.className = "button button-active";
+    button.onclick = function(){
+        manager.next();
+    }
+
+}
+
+
+Graphic.prototype.displayTurnInterface = function(){
+    let button = document.querySelector(".button");
+    button.className = "button";
+    button.onclick = "";
+    document.querySelectorAll(".playerFrame")[0].className = "playerFrame ";
+    document.querySelector(".supplyFrame").className = "supplyFrame";
+    document.querySelector(".tableau").className = "tableau tableau-active";
+}
+
 
 
 Graphic.prototype.resetHolderCard = function(divCard){
@@ -147,7 +176,28 @@ Graphic.prototype.clear = function(){
 				this.resetPlayerBoxCard(player);
 			}
 		}		
-	}	
+    }	
+}
+Graphic.prototype.resetBaseState = function(){
+    document.querySelector(".supplyFrame").className = "supplyFrame active";
+    document.querySelectorAll(".playerFrame")[0].className = "active playerFrame ";
+}
+
+
+Graphic.prototype.resetButton = function(){
+    let button = document.querySelector(".button");
+    let manager = this.manager;
+    button.onclick = "";
+    button.className = "button";
+}
+
+Graphic.prototype.setButtonActive = function(){
+    let button = document.querySelector(".button");
+    let manager = this.manager;
+    button.onclick = function(){
+        manager.next();
+    }
+    button.className = "button button-active";
 }
 
 

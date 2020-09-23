@@ -7,9 +7,11 @@ function Manager(){
     this.shorts = ["s", "t", "d", "n1", "n2", "n3", "m1", "m2", "m3", "c", "w", "p"];
     this.playerInfo = ["You", "P2", "P3", "P4"]
     this.boards = [[], [], [], []];
+    this.takenCards = [[], [], [], []];
     this.activePlayers = 1;  
     this.maxTurns = 8;
     this.turn = 0;
+    this.turnReqs = false;
 	this.maxRounds = 3;
     this.round = 0;
     this.populationIndex = 0;
@@ -40,32 +42,38 @@ Manager.prototype.increaseTurn = function(){
 	this.turn += 1;
 	if(this.turn < this.numberOfPlayers){
 		this.startPopulate();	
-		this.setActivePlayers();
+        this.setActivePlayers();
 	}
 }
 
 Manager.prototype.newTurn = function(){
     this.graphic.clear();
+    this.graphic.resetBaseState();
+    this.graphic.resetButton();
 	this.increaseTurn();	
     this.swapBoard();
     this.drawBoards();
-
-	this.resetPopulation();
+    this.resetPopulation();
+    this.resetReqs();
 }
 
-Manager.prototype.areBoardsFull = function(){
-	return true;
+Manager.prototype.resetReqs = function(){
+    this.turnReqs = false;
 }
+
 
 Manager.prototype.next = function(){
 	if(this.populatePhase == true){
-		this.endPopulate();
+        this.endPopulate();
+        this.resetReqs();
+        this.graphic.displayTurnInterface();
 		return;	
 	}
-	if(this.areBoardsFull()){
-		this.newTurn();	
+	else{
+        if(this.allCardsTaken()){
+            this.newTurn();	
+        }
 	}
-	
 }
 
 
@@ -76,7 +84,6 @@ Manager.prototype.drawBoards = function(){
 		for(let j = 0; j < board.length; j++){
 			let card = board[j];
 			let divCard = document.getElementById(i.toString()).childNodes[j];
-			console.log(card);
 			this.graphic.editCard(card, divCard);
 		}
 	}
@@ -172,17 +179,42 @@ Manager.prototype.populateHolderCard = function(card){
 		holderDiv.short = clickedCard.short;
 		this.boards[0].push(clickedCard);
 		this.graphic.editCard(clickedCard, holderDiv);
-		this.freePosition.splice(0,1);
+        this.freePosition.splice(0,1);
+        this.updateInterface();
     }
+}
+
+Manager.prototype.updateInterface = function(){
+    this.checkStateReqs();
+    this.drawStateInterface();
 }
 
 
 
 Manager.prototype.removeCardFromBoard = function(card){
 	let boardNum = card.parentNode.id.toString();
-	this.boards[boardNum].splice(card.index, 1);
+	let takenCard = this.boards[boardNum].splice(card.index, 1);
 	let supplyCard = this.getSupplyCardByShort(card.short);
-	this.graphic.drawPlayerBoxCard(boardNum, supplyCard);
+    this.graphic.drawPlayerBoxCard(boardNum, supplyCard);
+    this.storeTakenCard(boardNum, takenCard);    
+}
+
+Manager.prototype.storeTakenCard = function(boardNum, card){
+    this.takenCards[boardNum] = card;
+}
+
+Manager.prototype.drawStateInterface = function(){
+    if(this.turnReqs){
+        this.graphic.displayFinalizeButton();
+    }
+    else{
+        if(this.populatePhase){
+            this.graphic.resetBaseState();
+        }
+        else{
+            this.graphic.displayTurnInterface();
+        }
+    }
 }
 
 
@@ -207,6 +239,7 @@ Manager.prototype.getSupplyCardById = function(id){
 }
 
 Manager.prototype.moveCard = function(divCard){
+    this.updateInterface();
     this.graphic.resetHolderCard(divCard);
     if(this.populatePhase){
 		this.removePopulateCard(divCard);
@@ -221,6 +254,33 @@ Manager.prototype.removePopulateCard = function(card){
 	this.freePosition.push(card.index);
 	this.decreasePopulationIndex();
 	this.boards[0].splice(card.index, 1);
+}
+
+Manager.prototype.checkStateReqs = function(){
+    if(this.populatePhase){
+        if(this.boards[0].length == this.maxTurns - this.turn){
+            this.turnReqs = true;
+        }
+    }
+    else{
+        if(this.allCardsTaken()){
+            this.turnReqs = true;
+        }
+    }
+}
+
+Manager.prototype.allCardsTaken = function(){
+    let i = 3
+    if(this.turn < 3){
+        i = this.turn;
+    }
+    for(let j = 0; j < i; j++){
+        console.log(this.takenCards[i].length)
+        if(this.takenCards[i].length == 0){
+            return false;
+        }
+    }
+    return true;
 }
 
 
