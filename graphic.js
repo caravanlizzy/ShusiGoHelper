@@ -71,7 +71,7 @@ Graphic.prototype.createButton = function(){
 Graphic.prototype.drawInfoBox = function(content, parent){
     let infoBox = document.createElement('div');
     infoBox.classList.add("infoBox");
-    infoBox.innerHTML = content;
+    // infoBox.innerHTML = content;
     parent.appendChild(infoBox);
     return infoBox;
 }
@@ -180,12 +180,13 @@ Graphic.prototype.clear = function(){
 Graphic.prototype.resetBaseState = function(){
     document.querySelector(".supplyFrame").className = "supplyFrame active";
     document.querySelectorAll(".playerFrame")[0].className = "active playerFrame ";
+    document.querySelector(".tableau").className = "tableau";
 }
 
 
 Graphic.prototype.resetButton = function(){
     let button = document.querySelector(".button");
-    let manager = this.manager;
+    // let manager = this.manager;
     button.onclick = "";
     button.className = "button";
 }

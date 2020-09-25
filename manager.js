@@ -12,8 +12,6 @@ function Manager(){
     this.maxTurns = 8;
     this.turn = 0;
     this.turnReqs = false;
-	this.maxRounds = 3;
-    this.round = 0;
     this.populationIndex = 0;
     this.populatePhase = true;
     this.freePosition = [];
@@ -99,10 +97,6 @@ Manager.prototype.nextRound = function(){
 		this.activePlayers = 1;
 		this.boards = [[], [], [], []];
 	}
-}
-
-Manager.prototype.finishGame = function(){
-	alert("Game over, refresh for a new game.");	
 }
 
 
