@@ -78,7 +78,6 @@ Manager.prototype.next = function(){
 
 
 Manager.prototype.drawBoards = function(){
-	console.log("draw");
 	for(let i = 0; i < this.activePlayers; i++){
 		let board = this.boards[i];
 		for(let j = 0; j < board.length; j++){
@@ -141,7 +140,7 @@ Manager.prototype.decreasePopulationIndex = function(){
 
 
 Manager.prototype.checkFullPopulation = function(){
-    if(this.populationIndex == this.maxTurns){
+    if(this.populationIndex == this.maxTurns - this.turn){
         alert("Auslage ist voll.")
         return true;
     }
@@ -176,7 +175,7 @@ Manager.prototype.populateHolderCard = function(card){
 		this.increasePopulationIndex();
 		let clickedCard = this.getSupplyCardById(card.id);
 		holderDiv.index = position;
-		holderDiv.short = clickedCard.short;
+        holderDiv.short = clickedCard.short;
 		this.boards[0].push(clickedCard);
 		this.graphic.editCard(clickedCard, holderDiv);
         this.freePosition.splice(0,1);
@@ -189,11 +188,21 @@ Manager.prototype.updateInterface = function(){
     this.drawStateInterface();
 }
 
+Manager.prototype.findCardIndexByShort = function(short, boardNum){
+    let board = this.boards[boardNum];
+    for(let i = 0; i < board.length; i++){
+        if(board[i].short == short){
+            return i;
+        }
+    }
+}
+
 
 
 Manager.prototype.removeCardFromBoard = function(card){
-	let boardNum = card.parentNode.id.toString();
-	let takenCard = this.boards[boardNum].splice(card.index, 1);
+    let boardNum = card.parentNode.id.toString();
+    let cardIndex = this.findCardIndexByShort(card.short, boardNum);
+	let takenCard = this.boards[boardNum].splice(cardIndex, 1);
 	let supplyCard = this.getSupplyCardByShort(card.short);
     this.graphic.drawPlayerBoxCard(boardNum, supplyCard);
     this.storeTakenCard(boardNum, takenCard);    
@@ -240,14 +249,15 @@ Manager.prototype.getSupplyCardById = function(id){
 
 Manager.prototype.moveCard = function(divCard){
     this.updateInterface();
-    this.graphic.resetHolderCard(divCard);
     if(this.populatePhase){
 		this.removePopulateCard(divCard);
     }
 	else{
 		this.removeCardFromBoard(divCard);
 	}
-
+    this.graphic.resetHolderCard(divCard);
+    this.updateInterface();
+    
 }
 
 Manager.prototype.removePopulateCard = function(card){
@@ -270,12 +280,13 @@ Manager.prototype.checkStateReqs = function(){
 }
 
 Manager.prototype.allCardsTaken = function(){
+    console.log(this.takenCards);
     let i = 3
     if(this.turn < 3){
         i = this.turn;
     }
     for(let j = 0; j < i; j++){
-        console.log(this.takenCards[i].length)
+        // console.log(this.takenCards[i].length)
         if(this.takenCards[i].length == 0){
             return false;
         }

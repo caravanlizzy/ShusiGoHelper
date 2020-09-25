@@ -104,6 +104,7 @@ Graphic.prototype.drawPlayerCards = function(player){
 Graphic.prototype.editCard = function(card, divCard){
     divCard.style.backgroundColor = card.color;
     divCard.innerHTML = card.text;
+    divCard.short = card.short;
     let manager = this.manager;
     divCard.onclick = function(){
         manager.moveCard(this);
@@ -140,8 +141,6 @@ Graphic.prototype.displayTurnInterface = function(){
 Graphic.prototype.resetHolderCard = function(divCard){
     divCard.style.backgroundColor =  "rgb(184, 184, 184)";
     divCard.innerHTML = "";
-    // divCard.index = "";
-    // let manager = this.manager;
     divCard.onclick = function(){
         return;
     }
