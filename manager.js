@@ -141,7 +141,12 @@ Manager.prototype.decreasePopulationIndex = function(){
 
 Manager.prototype.checkFullPopulation = function(){
     if(this.populationIndex == this.maxTurns - this.turn){
-        alert("Auslage ist voll.")
+        if(this.populatePhase){
+            alert("Auslage ist voll.")
+        }
+        else{
+            "Wähle eine Karte."
+        }
         return true;
     }
     else{
