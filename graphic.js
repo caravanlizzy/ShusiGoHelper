@@ -30,6 +30,7 @@ Graphic.prototype.drawPlayerBoxCard = function(player, card){
 
 Graphic.prototype.init = function(){
     this.basicFrame = this.crepandBox('basicFrame', document.querySelector("body"));
+	this.createButton();
     this.infoFrame = this.crepandBox('infoFrame', this.basicFrame);
     this.tableau = this.crepandBox('tableau', this.basicFrame);
     this.supplyFrame = this.crepandBox('supplyFrame active', this.basicFrame);
@@ -41,7 +42,6 @@ Graphic.prototype.init = function(){
         this.drawPlayerCards(player);
     }
     this.drawSupplyCards(this.manager.supplyCards);
-	this.createButton();
 }
 
 
